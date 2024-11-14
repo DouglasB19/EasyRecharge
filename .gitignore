@@ -1,0 +1,31 @@
+# Arquivos de Configuração e Ambiente
+config.php
+.env
+
+# Dependências do Composer
+vendor/
+
+# Arquivos de Log
+*.log
+logs/
+
+# Diretórios de Cache e Temporários
+tmp/
+cache/
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Configurações do Editor
+.vscode/
+.idea/  # Para o PhpStorm
+*.sublime-workspace
+
+# Arquivos de Backup
+*.bak
+*.swp
+
+test_connection.php
+Comparar 1
+Comparar 2

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         bootstrap="Backend/EasyRecharge.API/vendor/autoload.php"
+         colors="true"
+         stopOnFailure="true">
+
+    <testsuites>
+        <testsuite name="EasyRecharge Test Suite">
+            <!-- Testes de Autenticação -->
+            <directory>Backend/EasyRecharge.API.Test/Auth</directory>
+
+            <!-- Testes de Recarga -->
+            <directory>Backend/EasyRecharge.API.Test/Recharge</directory>
+
+            <!-- Testes de AEPS (Depósito e Saque) -->
+            <directory>Backend/EasyRecharge.API.Test/AEPS</directory>
+
+            <!-- Testes de Transferência (DMT) -->
+            <directory>Backend/EasyRecharge.API.Test/DMT</directory>
+
+            <!-- Testes de Transações -->
+            <directory>Backend/EasyRecharge.API.Test/Transactions</directory>
+
+            <!-- Testes de Perfil -->
+            <directory>Backend/EasyRecharge.API.Test/Profile</directory>
+
+            <!-- Testes de Administração -->
+            <directory>Backend/EasyRecharge.API.Test/Admin</directory>
+
+            <!-- Testes de Suporte -->
+            <directory>Backend/EasyRecharge.API.Test/Support</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <!-- Variáveis do ambiente ou configurações globais -->
+        <env name="DB_HOST" value="localhost"/>
+        <env name="DB_NAME" value="easy_recharge_db"/>
+        <env name="DB_USER" value="root"/>
+        <env name="DB_PASS" value=""/>
+    </php>
+
+    <logging>
+        <junit outputFile="logs/phpunit.xml"/>
+    </logging>
+</phpunit>
