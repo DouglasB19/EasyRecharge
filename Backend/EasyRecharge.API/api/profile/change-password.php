@@ -6,7 +6,7 @@ use \Firebase\JWT\Key;
 
 header("Content-Type: application/json");
 
-// Função para extrair o token JWT do cabeçalho
+
 function extractJwt() {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
@@ -15,7 +15,7 @@ function extractJwt() {
     return null;
 }
 
-// Extrair e validar o token JWT
+
 $jwt = extractJwt();
 if (!$jwt) {
     echo json_encode(["message" => "Token JWT is required"]);
@@ -34,13 +34,13 @@ try {
     exit();
 }
 
-// Capturar os dados de entrada
+
 $data = json_decode(file_get_contents("php://input"));
 $current_password = $data->current_password ?? null;
 $new_password = $data->new_password ?? null;
 $confirm_password = $data->confirm_password ?? null;
 
-// Validações de senha
+
 if (!$current_password || !$new_password || !$confirm_password) {
     echo json_encode(["message" => "Current, new, and confirm password are required"]);
     exit();
@@ -61,7 +61,7 @@ if ($new_password !== $confirm_password) {
     exit();
 }
 
-// Verificar a senha atual no banco de dados
+
 try {
     $query = "SELECT password FROM users WHERE id = :user_id";
     $stmt = $pdo->prepare($query);
@@ -79,7 +79,7 @@ try {
     exit();
 }
 
-// Criptografar a nova senha e atualizar no banco de dados
+
 $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
 
 try {
@@ -97,4 +97,3 @@ try {
     error_log("Database Error: " . $e->getMessage(), 3, '../../logs/error_logs.log');
     echo json_encode(["message" => "An error occurred while processing your request"]);
 }
-?>

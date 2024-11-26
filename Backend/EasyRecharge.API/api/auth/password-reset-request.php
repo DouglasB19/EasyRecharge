@@ -1,6 +1,6 @@
 <?php
-require_once '../../config/config.php';  // Importa a configuração de banco de dados
-require_once '../../vendor/autoload.php'; // Carrega as dependências do Composer
+require_once '../../config/config.php';  
+require_once '../../vendor/autoload.php'; 
 
 use Firebase\JWT\JWT;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -19,9 +19,9 @@ function sendSuccess($message, $data = null) {
     exit();
 }
 
-$data = json_decode(file_get_contents("php://input"));  // Lê os dados enviados na requisição
+$data = json_decode(file_get_contents("php://input"));  
 
-// Verifica se o e-mail ou telefone foi enviado
+
 if (!isset($data->email) && !isset($data->phone)) {
     sendError("Email or phone is required");
 }
@@ -29,7 +29,7 @@ if (!isset($data->email) && !isset($data->phone)) {
 $email = isset($data->email) ? $data->email : null;
 $phone = isset($data->phone) ? $data->phone : null;
 
-// Verifica se o e-mail ou telefone estão no formato correto
+
 if ($email && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     sendError("Invalid email format", 422);
 }
@@ -38,7 +38,7 @@ if ($phone && !preg_match("/^\+?[1-9]\d{1,14}$/", $phone)) {
     sendError("Invalid phone number format", 422);
 }
 
-// Verificar se o e-mail ou telefone existe no banco de dados
+
 $query = "SELECT id FROM users WHERE email = :email OR phone = :phone";
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(":email", $email);
@@ -51,15 +51,15 @@ if (!$user) {
     sendError("Email or phone not found");
 }
 
-$user_id = $user['id'];  // Obtém o ID do usuário para registrar a tentativa
+$user_id = $user['id'];  
 
-// Registrar a tentativa de redefinição no banco de dados
+
 $insertAttemptQuery = "INSERT INTO password_reset_attempts (user_id, success) VALUES (:user_id, FALSE)";
 $insertAttemptStmt = $pdo->prepare($insertAttemptQuery);
 $insertAttemptStmt->bindParam(":user_id", $user_id);
 $insertAttemptStmt->execute();
 
-// Verificar o número de tentativas no último intervalo de 1 hora
+
 $attemptsQuery = "SELECT COUNT(*) FROM password_reset_attempts 
                   WHERE user_id = :user_id AND attempt_time > (NOW() - INTERVAL 1 HOUR)";
 $attemptsStmt = $pdo->prepare($attemptsQuery);
@@ -71,9 +71,9 @@ if ($attemptsCount >= 3) {
     sendError("Too many reset attempts. Please try again later.");
 }
 
-// Gerar o token JWT com a expiração de 15 minutos
+
 $issuedAt = time();
-$expirationTime = $issuedAt + 900;  // Token expira em 15 minutos
+$expirationTime = $issuedAt + 900;  
 $payload = array(
     "iat" => $issuedAt,
     "exp" => $expirationTime,
@@ -83,14 +83,14 @@ $payload = array(
 
 $jwt = JWT::encode($payload, $jwt_secret_key);
 
-// Gerar o link de redefinição de senha
+
 $resetLink = "https://yourdomain.com/reset-password?token=" . $jwt;
 
-// Enviar o link de redefinição de senha via PHPMailer
+
 $mail = new PHPMailer(true);
 
 try {
-    // Configurações do servidor SMTP
+    
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
@@ -108,7 +108,7 @@ try {
 
     $mail->send();
 
-    // Atualiza a tentativa no banco de dados como "sucesso"
+    
     $updateAttemptQuery = "UPDATE password_reset_attempts SET success = TRUE WHERE id = :attempt_id";
     $updateAttemptStmt = $pdo->prepare($updateAttemptQuery);
     $updateAttemptStmt->bindParam(":attempt_id", $pdo->lastInsertId());
@@ -118,4 +118,4 @@ try {
 } catch (Exception $e) {
     sendError("Failed to send password reset email. Error: " . $mail->ErrorInfo);
 }
-?>
+

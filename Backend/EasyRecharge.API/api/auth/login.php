@@ -9,7 +9,7 @@ header("Content-Type: application/json");
 $data = json_decode(file_get_contents("php://input"));
 
 if (!isset($data->email) && !isset($data->phone)) {
-    http_response_code(400); // Código 400 para erro de requisição
+    http_response_code(400); 
     echo json_encode(array("error" => "Email or phone is required"));
     exit();
 }
@@ -25,12 +25,12 @@ if (isset($data->email)) {
 
 if (isset($data->phone)) {
     $phone = $data->phone;
-    // Validação de telefone (se necessário)
+    
 }
 
-// Verificação se o campo password está presente
+
 if (!isset($data->password)) {
-    http_response_code(400); // Código 400 para falta de campo obrigatório
+    http_response_code(400); 
     echo json_encode(array("error" => "Password is required"));
     exit();
 }
@@ -72,12 +72,12 @@ try {
             )
         ));
     } else {
-        http_response_code(401); // Retorna código 401 para falha de autenticação
+        http_response_code(401);
         echo json_encode(array("error" => "Invalid email or password"));
     }
 } catch (PDOException $e) {
     error_log("[" . date('Y-m-d H:i:s') . "] Error: " . $e->getMessage(), 3, '../../logs/error_logs.log');
-    http_response_code(500); // Código 500 para erro interno do servidor
+    http_response_code(500); 
     echo json_encode(array("error" => "Error processing your request"));
 }
-?>
+

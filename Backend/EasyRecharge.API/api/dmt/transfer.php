@@ -6,7 +6,7 @@ use \Firebase\JWT\Key;
 
 header("Content-Type: application/json");
 
-// Verificação do token JWT
+
 $headers = getallheaders();
 if (!isset($headers['Authorization'])) {
     echo json_encode(["message" => "Token JWT is required"]);
@@ -23,7 +23,7 @@ try {
     exit();
 }
 
-// Receber e validar os dados da requisição
+
 $data = json_decode(file_get_contents("php://input"));
 if (!isset($data->amount) || !isset($data->recipient_user_id) || !isset($data->payment_method)) {
     echo json_encode(["message" => "Amount, recipient user ID, and payment method are required"]);
@@ -34,7 +34,7 @@ $amount = $data->amount;
 $recipient_user_id = (int)$data->recipient_user_id;
 $payment_method = trim($data->payment_method);
 
-// Validação de valor de transferência
+
 if (!is_numeric($amount) || $amount <= 0) {
     echo json_encode(["message" => "Invalid amount. Must be a positive number."]);
     exit();
@@ -55,10 +55,10 @@ if (!in_array($payment_method, $valid_payment_methods)) {
 }
 
 try {
-    // Iniciar transação no banco de dados
+    
     $pdo->beginTransaction();
 
-    // Verificação de saldo do usuário
+    
     $balanceQuery = "SELECT balance FROM user_balances WHERE user_id = :user_id FOR UPDATE";
     $balanceStmt = $pdo->prepare($balanceQuery);
     $balanceStmt->bindParam(':user_id', $user_id);
@@ -71,7 +71,7 @@ try {
         exit();
     }
 
-    // Verificação se o destinatário existe
+    
     $recipientCheckQuery = "SELECT COUNT(*) FROM users WHERE id = :recipient_user_id";
     $recipientCheckStmt = $pdo->prepare($recipientCheckQuery);
     $recipientCheckStmt->bindParam(':recipient_user_id', $recipient_user_id);
@@ -84,7 +84,7 @@ try {
         exit();
     }
 
-    // Inserir a transferência na tabela transfers com status 'processing'
+    
     $transaction_date = date('Y-m-d H:i:s');
     $transactionQuery = "INSERT INTO transfers (sender_user_id, recipient_user_id, amount, payment_method, transaction_date, status) 
                          VALUES (:sender_user_id, :recipient_user_id, :amount, :payment_method, :transaction_date, 'processing')";
@@ -101,7 +101,7 @@ try {
 
     $transfer_id = $pdo->lastInsertId();
 
-    // Atualizar os saldos dos usuários usando decremento/incremento
+    
     $updateSenderBalanceQuery = "UPDATE user_balances SET balance = balance - :amount WHERE user_id = :user_id";
     $updateSenderStmt = $pdo->prepare($updateSenderBalanceQuery);
     $updateSenderStmt->bindParam(':amount', $amount);
@@ -116,7 +116,7 @@ try {
         throw new Exception("Error updating balances");
     }
 
-    // Atualizar o status da transferência para 'completed'
+    
     $updateTransferStatusQuery = "UPDATE transfers SET status = 'completed' WHERE id = :transfer_id";
     $updateTransferStatusStmt = $pdo->prepare($updateTransferStatusQuery);
     $updateTransferStatusStmt->bindParam(':transfer_id', $transfer_id);
@@ -124,7 +124,7 @@ try {
 
     $pdo->commit();
 
-    // Log de sucesso da transferência
+    
     $logMessage = "Transfer successful: Sender ID: $user_id, Recipient ID: $recipient_user_id, Amount: $amount, Transfer ID: $transfer_id, Status: completed, Date: $transaction_date";
     error_log($logMessage, 3, '../../logs/transfer_logs.log');
 
@@ -135,4 +135,4 @@ try {
     echo json_encode(["message" => "Failed to process transfer", "error" => $e->getMessage()]);
     exit();
 }
-?>
+

@@ -8,7 +8,7 @@ class LogoutTest extends TestCase
 {
     private $client;
     private $validToken;
-    private $jwtSecretKey = 'your_jwt_secret_key'; // Substitua com o valor real da chave secreta
+    private $jwtSecretKey = 'your_jwt_secret_key'; 
 
     protected function setUp(): void
     {
@@ -16,7 +16,7 @@ class LogoutTest extends TestCase
             'base_uri' => 'http://localhost/EasyRecharge/Backend/EasyRecharge.API/',
         ]);
 
-        // Obter um token válido para o teste
+        
         $response = $this->client->post('api/auth/login.php', [
             'json' => [
                 'email' => 'johndoe@example.com',
@@ -71,12 +71,12 @@ class LogoutTest extends TestCase
 
     public function testLogoutWithExpiredToken()
     {
-        // Gerar um token JWT expirado dinamicamente
+        
         $expiredPayload = [
             'iss' => 'http://localhost/EasyRecharge',
             'user_id' => 1,
             'email' => 'johndoe@example.com',
-            'exp' => time() - 3600 // Expirado há uma hora
+            'exp' => time() - 3600 
         ];
         
         $expiredToken = JWT::encode($expiredPayload, $this->jwtSecretKey, 'HS256');

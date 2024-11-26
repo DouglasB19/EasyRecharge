@@ -10,15 +10,15 @@ class BlockUserTest extends TestCase
 
     protected function setUp(): void
     {
-        // Inicializa o cliente HTTP com a URL base da API
+        
         $this->client = new Client([
-            'base_uri' => 'http://localhost/EasyRecharge/Backend/EasyRecharge.API/', // Substitua pela URL correta da API
+            'base_uri' => 'http://localhost/EasyRecharge/Backend/EasyRecharge.API/', 
         ]);
 
-        // Supondo que haja um endpoint de login que retorna um token de administrador válido
+        
         $response = $this->client->post('api/auth/login.php', [
             'json' => [
-                'email' => 'admin@example.com', // Substitua com credenciais válidas de administrador
+                'email' => 'admin@example.com', 
                 'password' => 'adminpassword'
             ]
         ]);
@@ -27,10 +27,10 @@ class BlockUserTest extends TestCase
         $this->adminToken = $data['token'];
     }
 
-    // Teste de bloqueio de usuário com ID válido
+    
     public function testBlockUserWithValidId()
     {
-        $userId = 1; // Substitua com um ID válido de um usuário para teste
+        $userId = 1; 
 
         $response = $this->client->post("api/admin/block-user.php", [
             'headers' => [
@@ -49,10 +49,10 @@ class BlockUserTest extends TestCase
         $this->assertEquals('User blocked successfully', $data['message']);
     }
 
-    // Teste de bloqueio de usuário com ID inválido
+    
     public function testBlockUserWithInvalidId()
     {
-        $userId = 9999; // ID inexistente no banco de dados
+        $userId = 9999; 
 
         $response = $this->client->post("api/admin/block-user.php", [
             'headers' => [
@@ -71,7 +71,7 @@ class BlockUserTest extends TestCase
         $this->assertEquals('User not found', $data['message']);
     }
 
-    // Teste de bloqueio de usuário sem fornecer o ID
+    
     public function testBlockUserWithoutId()
     {
         $response = $this->client->post("api/admin/block-user.php", [
@@ -90,10 +90,10 @@ class BlockUserTest extends TestCase
         $this->assertEquals('Valid user_id is required', $data['message']);
     }
 
-    // Teste de ação inválida
+    
     public function testBlockUserWithInvalidAction()
     {
-        $userId = 1; // ID válido para teste
+        $userId = 1; 
 
         $response = $this->client->post("api/admin/block-user.php", [
             'headers' => [
@@ -101,7 +101,7 @@ class BlockUserTest extends TestCase
             ],
             'json' => [
                 'user_id' => $userId,
-                'action' => 'freeze' // Ação inválida
+                'action' => 'freeze' 
             ]
         ]);
 

@@ -54,7 +54,7 @@ class ResetPasswordTest extends TestCase
     public function testResetPasswordWithWeakPassword()
     {
         $validToken = 'valid-reset-token';
-        $weakPassword = '123';  // Senha fraca (menos que 8 caracteres)
+        $weakPassword = '123';  
 
         $response = $this->client->post('api/auth/reset-password.php', [
             'json' => [
@@ -90,9 +90,9 @@ class ResetPasswordTest extends TestCase
     public function testResetPasswordWithSamePassword()
     {
         $validToken = 'valid-reset-token';
-        $newPassword = 'existingPassword123!';  // A senha já existente
+        $newPassword = 'existingPassword123!';  
 
-        // A resposta deve ser que a nova senha não pode ser igual à anterior
+        
         $response = $this->client->post('api/auth/reset-password.php', [
             'json' => [
                 'token' => $validToken,

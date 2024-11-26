@@ -16,15 +16,15 @@ class RegisterTest extends TestCase
 
     public function testSuccessfulRegistration()
     {
-        // Gerando um e-mail e telefone exclusivos para o teste
+        
         $email = 'janedoe_' . time() . '@example.com';
         $phone = '+551199876' . rand(1000, 9999);
 
         $response = $this->client->post('api/auth/register.php', [
             'json' => [
                 'name' => 'Jane Doe',
-                'email' => $email,  // E-mail único gerado dinamicamente
-                'phone' => $phone,   // Telefone único gerado dinamicamente
+                'email' => $email,  
+                'phone' => $phone,   
                 'password' => 'SecurePassword-123'
             ]
         ]);
@@ -32,26 +32,26 @@ class RegisterTest extends TestCase
         $this->assertEquals(201, $response->getStatusCode());
         $data = json_decode($response->getBody(), true);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('User registered successfully', $data['message']);  // Mensagem esperada
+        $this->assertEquals('User registered successfully', $data['message']);  
     }
 
     public function testRegistrationWithExistingEmail()
     {
-        // Usando e-mail que já existe no banco de dados
+        
         $response = $this->client->post('api/auth/register.php', [
             'json' => [
                 'name' => 'Jane Doe',
-                'email' => 'johndoe@example.com',  // E-mail que já deve existir no banco
+                'email' => 'johndoe@example.com',  
                 'password' => 'SecurePassword123',
                 'phone' => '+5511998765432'
             ],
             'http_errors' => false,
         ]);
 
-        $this->assertEquals(400, $response->getStatusCode());  // Ajuste de status code de 409 para 400
+        $this->assertEquals(400, $response->getStatusCode());  
         $data = json_decode($response->getBody(), true);
         $this->assertArrayHasKey('message', $data);
-        $this->assertEquals('Email or phone already exists', $data['message']);  // Mensagem esperada
+        $this->assertEquals('Email or phone already exists', $data['message']);  
     }
 
     public function testRegistrationWithInvalidData()
@@ -66,10 +66,10 @@ class RegisterTest extends TestCase
             'http_errors' => false,
         ]);
 
-        $this->assertEquals(400, $response->getStatusCode());  // Status code esperado 400
-        $data = json_decode($response->getBody(), true);  // Decodificando a resposta como array
-        $this->assertArrayHasKey('message', $data);  // Verifica se 'message' está presente
-        $this->assertStringContainsString('Email or phone already exists', $data['message']);  // Mensagem de erro esperada
+        $this->assertEquals(400, $response->getStatusCode());  
+        $data = json_decode($response->getBody(), true);  
+        $this->assertArrayHasKey('message', $data);  
+        $this->assertStringContainsString('Email or phone already exists', $data['message']);  
     }
 
     public function testRegistrationWithMissingFields()
@@ -81,10 +81,10 @@ class RegisterTest extends TestCase
             'http_errors' => false,
         ]);
 
-        $this->assertEquals(400, $response->getStatusCode());  // Status code esperado 400
-        $data = json_decode($response->getBody(), true);  // Decodificando a resposta como array
-        $this->assertArrayHasKey('message', $data);  // Verifica se 'message' está presente
-        $this->assertStringContainsString('All fields are required', $data['message']);  // Mensagem de erro esperada
+        $this->assertEquals(400, $response->getStatusCode());  
+        $data = json_decode($response->getBody(), true);  
+        $this->assertArrayHasKey('message', $data);  
+        $this->assertStringContainsString('All fields are required', $data['message']);  
     }
 }
 ?>

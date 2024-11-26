@@ -6,7 +6,7 @@ use \Firebase\JWT\Key;
 
 header("Content-Type: application/json");
 
-// Função para extrair o JWT
+
 function extractJwt() {
     $headers = getallheaders();
     if (isset($headers['Authorization'])) {
@@ -38,13 +38,13 @@ $name = isset($data->name) ? trim($data->name) : null;
 $email = isset($data->email) ? trim($data->email) : null;
 $phone = isset($data->phone) ? trim($data->phone) : null;
 
-// Verificar se todos os campos obrigatórios foram preenchidos
+
 if (!$name || !$email || !$phone) {
     echo json_encode(["message" => "Name, email, and phone are required"]);
     exit();
 }
 
-// Validar o formato do telefone internacional
+
 if (!preg_match('/^\+[1-9]\d{1,14}$/', $phone)) {
     echo json_encode(["message" => "Invalid phone number format. Use international format, e.g., +5511998765432"]);
     exit();
@@ -67,4 +67,3 @@ try {
     error_log("Database Error: " . $e->getMessage(), 3, '../../logs/error_logs.log');
     echo json_encode(["message" => "Database error. Please try again later."]);
 }
-?>

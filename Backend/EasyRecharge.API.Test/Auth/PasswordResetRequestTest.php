@@ -24,19 +24,19 @@ class PasswordResetRequestTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
 
-        // Depuração: Imprimir o conteúdo da resposta
+        
         $body = (string) $response->getBody();
         echo "Response Body: " . $body . "\n";
 
-        // Verificar os cabeçalhos de resposta
+        
         $headers = $response->getHeaders();
         echo "Response Headers: \n";
         print_r($headers);
 
-        // Tentar decodificar a resposta JSON
+        
         $data = json_decode($body, true);
 
-        // Verifica se a resposta não é null e é um array
+        
         $this->assertNotNull($data, 'Expected response to be a valid JSON.');
         $this->assertIsArray($data);
         $this->assertArrayHasKey('message', $data);
@@ -54,16 +54,16 @@ class PasswordResetRequestTest extends TestCase
 
         $this->assertEquals(400, $response->getStatusCode());
 
-        // Depuração: Imprimir o conteúdo da resposta
+        
         $body = (string) $response->getBody();
         echo "Response Body: " . $body . "\n";
 
-        // Verificar os cabeçalhos de resposta
+        
         $headers = $response->getHeaders();
         echo "Response Headers: \n";
         print_r($headers);
 
-        // Tentar decodificar a resposta JSON
+        
         $data = json_decode($body, true);
         
         $this->assertNotNull($data, 'Expected response to be a valid JSON.');
@@ -83,19 +83,19 @@ class PasswordResetRequestTest extends TestCase
 
         $this->assertEquals(422, $response->getStatusCode());
 
-        // Depuração: Imprimir o conteúdo da resposta
+        
         $body = (string) $response->getBody();
         echo "Response Body: " . $body . "\n";
 
-        // Verificar os cabeçalhos de resposta
+        
         $headers = $response->getHeaders();
         echo "Response Headers: \n";
         print_r($headers);
 
-        // Tentar decodificar a resposta JSON
+        
         $data = json_decode($body, true);
 
-        // Verifica se a resposta é um array válido
+        
         $this->assertNotNull($data, 'Expected response to be a valid JSON.');
         $this->assertIsArray($data);
         $this->assertArrayHasKey('message', $data);
@@ -111,19 +111,19 @@ class PasswordResetRequestTest extends TestCase
 
         $this->assertEquals(400, $response->getStatusCode());
 
-        // Depuração: Imprimir o conteúdo da resposta
+        
         $body = (string) $response->getBody();
         echo "Response Body: " . $body . "\n";
 
-        // Verificar os cabeçalhos de resposta
+        
         $headers = $response->getHeaders();
         echo "Response Headers: \n";
         print_r($headers);
 
-        // Tentar decodificar a resposta JSON
+        
         $data = json_decode($body, true);
 
-        // Verifica se a resposta é um array válido
+        
         $this->assertNotNull($data, 'Expected response to be a valid JSON.');
         $this->assertIsArray($data);
         $this->assertArrayHasKey('message', $data);

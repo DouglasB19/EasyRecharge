@@ -26,7 +26,7 @@ try {
 
 $page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 $limit = isset($_GET['limit']) && $_GET['limit'] > 0 && $_GET['limit'] <= 100 ? (int)$_GET['limit'] : 10;
-$page = min($page, 1000);  // Limitar valor de page
+$page = min($page, 1000);  
 
 $offset = ($page - 1) * $limit;
 
@@ -36,7 +36,7 @@ $transaction_type = isset($_GET['transaction_type']) && in_array($_GET['transact
 date_default_timezone_set('UTC');
 
 try {
-    // Contagem das transações
+    
     $countQuery = "SELECT COUNT(DISTINCT id) FROM transactions WHERE user_id = :user_id";
     if ($transaction_type) {
         $countQuery .= " AND transaction_type = :transaction_type";
@@ -49,7 +49,7 @@ try {
     $countStmt->execute();
     $totalTransactions = $countStmt->fetchColumn();
 
-    // Consultando transações
+    
     $query = "SELECT id AS transaction_id, amount, transaction_type, transaction_date FROM transactions WHERE user_id = :user_id";
     if ($transaction_type) {
         $query .= " AND transaction_type = :transaction_type";
@@ -65,7 +65,7 @@ try {
     $stmt->execute();
     $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Formatação das transações
+    
     $transactions = array_map(function($transaction) {
         $transaction['transaction_date'] = (new DateTime($transaction['transaction_date'], new DateTimeZone('UTC')))
             ->setTimezone(new DateTimeZone('America/Sao_Paulo'))
@@ -89,4 +89,4 @@ try {
     error_log("Error: User ID: $user_id, Error: " . $e->getMessage(), 3, '../../logs/error_logs.log');
     echo json_encode(["message" => "Failed to fetch transaction history"]);
 }
-?>
+

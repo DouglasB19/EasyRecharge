@@ -6,7 +6,6 @@ use \Firebase\JWT\Key;
 
 header("Content-Type: application/json");
 
-// Verificação do token JWT
 $headers = getallheaders();
 if (!isset($headers['Authorization'])) {
     echo json_encode(["error_code" => "ERR_AUTH_REQUIRED", "message" => "JWT token is required"]);
@@ -123,4 +122,4 @@ try {
     error_log("Failed to process deposit: " . $e->getMessage(), 3, "../../logs/error_logs.log");
     echo json_encode(["error_code" => "ERR_DEPOSIT_FAILED", "message" => "Failed to process deposit."]);
 }
-?>
+

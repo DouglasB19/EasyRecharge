@@ -1,5 +1,4 @@
 # Arquivos de Configuração e Ambiente
-config.php
 .env
 
 # Dependências do Composer
@@ -29,3 +28,4 @@ Thumbs.db
 test_connection.php
 Comparar 1
 Comparar 2
+Frontend/

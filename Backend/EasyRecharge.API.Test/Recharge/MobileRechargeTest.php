@@ -15,11 +15,11 @@ class MobileRechargeTest extends TestCase
             'base_uri' => 'http://localhost/EasyRecharge/Backend/EasyRecharge.API/',
         ]);
 
-        // Chama o endpoint de login para obter o token JWT válido
+        
         $response = $this->client->post('api/auth/login.php', [
             'json' => [
-                'email' => 'johndoe@example.com',  // Substitua pelo e-mail do usuário de teste
-                'password' => '12345678'           // Substitua pela senha do usuário de teste
+                'email' => 'johndoe@example.com',  
+                'password' => '12345678'           
             ]
         ]);
 
@@ -35,7 +35,7 @@ class MobileRechargeTest extends TestCase
                 'phone_number' => '+5511998765432',
                 'country_code' => 'BR',
                 'amount' => 50,
-                'operator_id' => 1, // Use um ID válido
+                'operator_id' => 1, 
             ],
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->jwtToken,
