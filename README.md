@@ -1,23 +1,23 @@
-# Clone the repository
+Clone the repository
 git clone <REPOSITORY_URL>
 cd EasyRecharge/Backend/EasyRecharge.API
 
-# Set up the database
-# - Create `easy_recharge_db` and import the .sql file
+Set up the database
+- Create `easy_recharge_db` and import the .sql file
 
-# Install Composer dependencies
+Install Composer dependencies
 composer init
 composer require firebase/php-jwt
 composer dump-autoload
 
-# Set up the frontend
+Set up the frontend
 cd EasyRecharge/Frontend
 npm install
 npm start
 
-# Restart Apache if necessary
+Restart Apache if necessary
 sudo service apache2 restart   # On Linux
-# Or restart via XAMPP on Windows
+Or restart via XAMPP on Windows
 
 3. Configure the Database
 3.1. Start MySQL
